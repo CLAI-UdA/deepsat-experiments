@@ -83,8 +83,6 @@ class ProofGraph:
             default_factory=lambda: str(uuid4()), init=False
         )  
 
-#        """DESIGN NOTE: see proofgraph_class_doc"""
-
         def __str__(self) -> str:
             return f"{self.sequent} ({self.num_moves})"
 
@@ -119,7 +117,8 @@ class ProofGraph:
                     value = aggregate_by_connective(
                         move=edge.move,
                         child_nodes=edge.sequents,
-                        mode="value" 
+                        mode="value" #,
+                        #parent_sequent=current.sequent
                     )
                     
                     if value is None:
@@ -136,7 +135,6 @@ class ProofGraph:
             if new_num_moves != current.num_moves:
                 current.num_moves = new_num_moves
                 nodes.extend(current.parents)
-
 
     def add_children(
         self, parent: Node, move: Sequent.Move, children: list[Sequent]
@@ -168,7 +166,7 @@ class ProofGraph:
         
         # Check whether at least one rule has all its children proved
         for move, children in node.children:
-            if aggregate_by_connective(move, children, mode="proved"): #, parent_sequent=node.sequent):
+            if aggregate_by_connective(move, children, mode="proved"): 
                 node.num_moves = intinf(0)
                 for parent in node.parents:
                     self.set_proved(parent)

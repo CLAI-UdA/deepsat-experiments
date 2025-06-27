@@ -25,9 +25,6 @@ class Sequent:
         
 
         pos: int  
-        # -1: apply the move to the conclusion
-        # 0 to len(premises)-1 : apply the move to a premise
-
         param: Literal["left", "right"]  
 
     def __str__(self) -> str:

@@ -273,45 +273,6 @@ class TreeLSTMClassifierV2(nn.Module):
 
 
 
-# =========================== 
-#   NEW MODEL V3 DROPOUT=0.4 
-# ===========================
-
-# --- Tree LSTM Classifier V3 (with NEW Dropout) ---
-class TreeLSTMClassifierV3(nn.Module):
-    """
-    A TreeLSTM-based binary classifier with dropout regularization.
-
-    This version of the classifier extends the basic TreeLSTMClassifier by introducing
-    dropout after the first fully connected layer to reduce overfitting.
-
-    Architecture:
-    - TreeLSTMEncoder: recursively encodes the input formula tree.
-    - Fully-connected layer with ReLU: projects hidden representation to intermediate space.
-    - Dropout: applied after ReLU to regularize the model.
-    - Output layer: maps to a single logit for binary classification.
-
-    Args:
-        vocab_size (int): Size of the input vocabulary (number of unique token indices).
-        embedding_dim (int): Dimensionality of input embeddings.
-        hidden_size (int): Dimensionality of TreeLSTM hidden states.
-        fc_size (int): Size of the intermediate fully connected layer.
-    """
-    def __init__(self, vocab_size, embedding_dim, hidden_size, fc_size):
-        super().__init__()
-        self.encoder = TreeLSTMEncoder(vocab_size, embedding_dim, hidden_size)
-        self.fc1 = nn.Linear(hidden_size, fc_size)
-        self.relu = nn.ReLU()
-        self.dropout = nn.Dropout(p=0.4)
-        self.fc2 = nn.Linear(fc_size, 1) 
-
-    def forward(self, root_node: FormulaTreeNode):
-        h, _ = self.encoder(root_node)  
-        x = self.relu(self.fc1(h))
-        x = self.dropout(x)
-        output = self.fc2(x)
-        output = output.squeeze(1)  
-        return output
 
 
 

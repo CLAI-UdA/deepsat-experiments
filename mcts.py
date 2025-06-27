@@ -4,9 +4,9 @@ from theorem_prover_core.formula import (Formula, Letter, Falsity, Conjunction, 
                                          Negation, BinaryConnectiveFormula, UnaryConnectiveFormula, bottom)
 
 number_simulations = (
-    1600  # Following AlphaGo Zero model, but PROVISORY!
+    1600  # Provvisory
 )
-c_puct_value = 5 #PROVISORY (it works well with chain test)
+c_puct_value = 5 # Provvisory
 
 """
 Monte Carlo Tree Search for DNN-guided proof search.
@@ -49,7 +49,7 @@ def formula_applied_to(sequent: Sequent, move: Sequent.Move) -> Formula:
     )
 
 
-def aggregate_by_connective(move, child_nodes, mode="value"):   
+def aggregate_by_connective(move, child_nodes, mode="value"):    
     """
     Aggregates values or proof statuses from child nodes,
     using logical semantics of the rule (conjunction, disjunction, implication, etc.).
@@ -78,7 +78,6 @@ def aggregate_by_connective(move, child_nodes, mode="value"):
     return min(Qs) if mode == "value" else all(subgoals_proved) 
 
 
-
 # --- ProofTreeNode Class ---
 class ProofTreeNode:
     """A node in the MCTS proof tree, corresponding to a ProofGraph.Node."""
@@ -89,10 +88,10 @@ class ProofTreeNode:
         self._parent = parent  
         self._children = dict()  # maps move to list of ProofTreeNode
         self._n_visits = 0  
-        self._Q_total = 0  # Total accumulated value
-        self._Q = 0        # Mean value
-        self._u = 0        # Exploration bonus
-        self._P = prior_p  # Prior from neural policy
+        self._Q_total = 0   # Total accumulated value
+        self._Q = 0         # Mean value
+        self._u = 0         # Exploration bonus
+        self._P = prior_p   # Prior from neural policy
         self.id = pg_node.id  # For matching nodes across MCTS tree and proof graph
 
     def expand(self, move_priors, proof_graph):
@@ -188,9 +187,9 @@ class ProofTreeNode:
                 move_value = aggregate_by_connective(
                     move,
                     child_nodes,
-                    mode="value"
+                    mode="value" #,
+                    #parent_sequent=self._parent.sequent
                 )
-                
                 
                 if move_value is not None:
                     move_values.append(move_value)
