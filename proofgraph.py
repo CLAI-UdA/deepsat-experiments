@@ -119,8 +119,7 @@ class ProofGraph:
                     value = aggregate_by_connective(
                         move=edge.move,
                         child_nodes=edge.sequents,
-                        mode="value",
-                        parent_sequent=current.sequent
+                        mode="value" 
                     )
                     
                     if value is None:
@@ -169,7 +168,7 @@ class ProofGraph:
         
         # Check whether at least one rule has all its children proved
         for move, children in node.children:
-            if aggregate_by_connective(move, children, mode="proved", parent_sequent=node.sequent):
+            if aggregate_by_connective(move, children, mode="proved"): #, parent_sequent=node.sequent):
                 node.num_moves = intinf(0)
                 for parent in node.parents:
                     self.set_proved(parent)

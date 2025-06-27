@@ -49,7 +49,7 @@ def formula_applied_to(sequent: Sequent, move: Sequent.Move) -> Formula:
     )
 
 
-def aggregate_by_connective(move, child_nodes, mode="value", parent_sequent=None):
+def aggregate_by_connective(move, child_nodes, mode="value"):   
     """
     Aggregates values or proof statuses from child nodes,
     using logical semantics of the rule (conjunction, disjunction, implication, etc.).
@@ -75,28 +75,7 @@ def aggregate_by_connective(move, child_nodes, mode="value", parent_sequent=None
     Qs = [get_q(c) for c in child_nodes if get_q(c) is not None]
     subgoals_proved = [is_proved(c) for c in child_nodes]
 
-    if parent_sequent is None:
-        raise ValueError("parent_sequent must be provided to aggregate_by_connective")
-
-    f = (
-        parent_sequent.conclusion
-        if move.pos == -1
-        else parent_sequent.premises[move.pos]
-    )
-
-    if not Qs:
-        raise ValueError(f"[aggregate_by_connective] No Q-values found for move {move} on sequent {parent_sequent}")
-        
-    if isinstance(f, Conjunction):
-        return min(Qs) if mode == "value" else all(subgoals_proved)
-    elif isinstance(f, Disjunction) and move.pos == -1:
-        return max(Qs) if mode == "value" else any(subgoals_proved)
-    elif isinstance(f, Disjunction) and move.pos >= 0:
-        return min(Qs) if mode =="value" else all(subgoals_proved)
-    elif isinstance(f, (Implication, Negation)):
-        return Qs[0] if mode == "value" else subgoals_proved[0]
-    else:
-        raise TypeError(f"[aggregate_by_connective] Unsupported formula type: {type(f)}, {f}")
+    return min(Qs) if mode == "value" else all(subgoals_proved) 
 
 
 
@@ -169,7 +148,7 @@ class ProofTreeNode:
             elif isinstance(f, (Implication, Negation)):
                 total_value = Qs_with_U[0]
             else: 
-                print(f"[DEBUG] Formula non riconosciuta: {f} (tipo: {type(f)})")
+                print(f"[DEBUG] Unrecognized formula: {f} (type: {type(f)})")
                 raise ValueError("Unknown connective type.")
             
             # Update the best move
@@ -209,8 +188,7 @@ class ProofTreeNode:
                 move_value = aggregate_by_connective(
                     move,
                     child_nodes,
-                    mode="value",
-                    parent_sequent=self._parent.sequent
+                    mode="value"
                 )
                 
                 
@@ -277,8 +255,7 @@ class ProofTreeNode:
             if aggregate_by_connective(
                 move,
                 child_nodes,
-                mode="proved",
-                parent_sequent=self.sequent
+                mode="proved"
             ):
                 return True
 
