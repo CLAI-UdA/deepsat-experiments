@@ -2,7 +2,7 @@
 Experiments related to the DeepSAT project.
 
 # Project Structure
-The repositoey in organized into modules and folders that separate the core logic, experimental tools, datasets, and trained models. 
+The repository in organized into modules and folders that separate the core logic, experimental tools, datasets, and trained models. 
 
 
 ## `theorem_prover_core/` - Core Logic and Proof Search Modules
