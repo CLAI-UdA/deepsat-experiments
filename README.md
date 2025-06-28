@@ -1,7 +1,7 @@
 # deepsat-experiments
 Experiments related to the DeepSAT project.
 
-# Project Structure Explained
+# Project Structure
 The repositoey in organized into modules and folders that separate the core logic, experimental tools, datasets, and trained models. 
 
 
